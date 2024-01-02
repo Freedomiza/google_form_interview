@@ -135,29 +135,29 @@ class UserFormList extends _$UserFormList {
     state = state.copyWith(questions: modified);
   }
 
-  void changeQuestionListLongAnswerTextAt(
-      Question question, QuestionLine e, String value) {
-    final index = state.questions.indexWhere((e) => e.id == question.id);
+  // void changeQuestionListLongAnswerTextAt(
+  //     Question question, QuestionLine e, String value) {
+  //   final index = state.questions.indexWhere((e) => e.id == question.id);
 
-    final modified = [...state.questions];
-    final questionList = modified[index].questions;
-    var itemIdx = questionList.indexWhere((element) => element.id == e.id);
-    if (itemIdx < 0) return;
+  //   final modified = [...state.questions];
+  //   final questionList = modified[index].questions;
+  //   var itemIdx = questionList.indexWhere((element) => element.id == e.id);
+  //   if (itemIdx < 0) return;
 
-    var newItem = questionList[itemIdx].copyWith(longAnswer: value);
-    var newQuestionList = [
-      ...questionList.slice(0, itemIdx),
-      newItem,
-      ...questionList.slice(itemIdx + 1)
-    ];
+  //   var newItem = questionList[itemIdx].copyWith(longAnswer: value);
+  //   var newQuestionList = [
+  //     ...questionList.slice(0, itemIdx),
+  //     newItem,
+  //     ...questionList.slice(itemIdx + 1)
+  //   ];
 
-    // questionList.replaceRange(start, end, replacements)
-    modified[index] = modified[index].copyWith(
-      questions: [...newQuestionList],
-    );
+  //   // questionList.replaceRange(start, end, replacements)
+  //   modified[index] = modified[index].copyWith(
+  //     questions: [...newQuestionList],
+  //   );
 
-    state = state.copyWith(questions: modified);
-  }
+  //   state = state.copyWith(questions: modified);
+  // }
 
   void markQuestionListEditable(
       Question question, QuestionLine e, bool editable) {

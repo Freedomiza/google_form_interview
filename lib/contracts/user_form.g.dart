@@ -11,7 +11,8 @@ _$UserFormImpl _$$UserFormImplFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String? ?? '',
       title: json['title'] as String? ?? 'Untitled form',
       description: json['description'] as String?,
-      status: json['status'] ?? FormStatus.init,
+      status: $enumDecodeNullable(_$FormStatusEnumMap, json['status']) ??
+          FormStatus.init,
       questions: (json['questions'] as List<dynamic>?)
               ?.map((e) => Question.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -23,6 +24,12 @@ Map<String, dynamic> _$$UserFormImplToJson(_$UserFormImpl instance) =>
       'id': instance.id,
       'title': instance.title,
       'description': instance.description,
-      'status': instance.status,
+      'status': _$FormStatusEnumMap[instance.status]!,
       'questions': instance.questions,
     };
+
+const _$FormStatusEnumMap = {
+  FormStatus.init: 'init',
+  FormStatus.review: 'review',
+  FormStatus.submitted: 'submitted',
+};

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:avnon_pre_interview/contracts/question.dart';
+import 'package:avnon_pre_interview/contracts/user_form.dart';
 import 'package:avnon_pre_interview/gen/l10n.dart';
 import 'package:avnon_pre_interview/providers/form_provider.dart';
 import 'package:avnon_pre_interview/routes/app_route.dart';
@@ -65,22 +66,26 @@ class HomeScreen extends ConsumerWidget {
       ];
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final userForm = ref.watch(userFormListProvider);
+    final status = userForm.status;
     return TabLayoutWithRoute(
       screens: _screen,
       items: bottomItems(context),
       bottomAppBarActiveTextColor: Theme.of(context).colorScheme.onPrimary,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ref.read(userFormListProvider.notifier).addQuestion(
-                Question(
-                  id: const Uuid().v4(),
-                  title: 'Question Title',
-                  description: 'Question Description',
-                ),
-              );
-        },
-        child: const Icon(FontAwesomeIcons.plus),
-      ),
+      floatingActionButton: status == FormStatus.init
+          ? FloatingActionButton(
+              onPressed: () {
+                ref.read(userFormListProvider.notifier).addQuestion(
+                      Question(
+                        id: const Uuid().v4(),
+                        title: 'Question Title',
+                        description: 'Question Description',
+                      ),
+                    );
+              },
+              child: const Icon(FontAwesomeIcons.plus),
+            )
+          : null,
     );
   }
 }

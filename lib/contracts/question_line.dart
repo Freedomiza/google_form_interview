@@ -35,13 +35,11 @@ class QuestionLine with _$QuestionLine {
   factory QuestionLine({
     String? id,
     String? question,
-    String? answer,
-    String? longAnswer,
     @Default(false) bool editable,
     @Default(false) bool checked,
     @Default(false) bool isOther,
-    @Default(QuestionType.multiple) QuestionType type,
-    @Default([]) List<String> options,
+    @Default([]) List<String> others,
+    @Default(0) int count,
   }) = _QuestionLine;
 
   factory QuestionLine.fromJson(Map<String, dynamic> json) =>

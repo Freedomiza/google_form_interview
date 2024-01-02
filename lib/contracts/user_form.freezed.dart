@@ -23,7 +23,7 @@ mixin _$UserForm {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  dynamic get status => throw _privateConstructorUsedError;
+  FormStatus get status => throw _privateConstructorUsedError;
   List<Question> get questions => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,7 +41,7 @@ abstract class $UserFormCopyWith<$Res> {
       {String id,
       String title,
       String? description,
-      dynamic status,
+      FormStatus status,
       List<Question> questions});
 }
 
@@ -61,7 +61,7 @@ class _$UserFormCopyWithImpl<$Res, $Val extends UserForm>
     Object? id = null,
     Object? title = null,
     Object? description = freezed,
-    Object? status = freezed,
+    Object? status = null,
     Object? questions = null,
   }) {
     return _then(_value.copyWith(
@@ -77,10 +77,10 @@ class _$UserFormCopyWithImpl<$Res, $Val extends UserForm>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      status: freezed == status
+      status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as FormStatus,
       questions: null == questions
           ? _value.questions
           : questions // ignore: cast_nullable_to_non_nullable
@@ -101,7 +101,7 @@ abstract class _$$UserFormImplCopyWith<$Res>
       {String id,
       String title,
       String? description,
-      dynamic status,
+      FormStatus status,
       List<Question> questions});
 }
 
@@ -119,7 +119,7 @@ class __$$UserFormImplCopyWithImpl<$Res>
     Object? id = null,
     Object? title = null,
     Object? description = freezed,
-    Object? status = freezed,
+    Object? status = null,
     Object? questions = null,
   }) {
     return _then(_$UserFormImpl(
@@ -135,7 +135,10 @@ class __$$UserFormImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      status: freezed == status ? _value.status! : status,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as FormStatus,
       questions: null == questions
           ? _value._questions
           : questions // ignore: cast_nullable_to_non_nullable
@@ -168,7 +171,7 @@ class _$UserFormImpl implements _UserForm {
   final String? description;
   @override
   @JsonKey()
-  final dynamic status;
+  final FormStatus status;
   final List<Question> _questions;
   @override
   @JsonKey()
@@ -192,19 +195,14 @@ class _$UserFormImpl implements _UserForm {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
-            const DeepCollectionEquality().equals(other.status, status) &&
+            (identical(other.status, status) || other.status == status) &&
             const DeepCollectionEquality()
                 .equals(other._questions, _questions));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      title,
-      description,
-      const DeepCollectionEquality().hash(status),
+  int get hashCode => Object.hash(runtimeType, id, title, description, status,
       const DeepCollectionEquality().hash(_questions));
 
   @JsonKey(ignore: true)
@@ -226,7 +224,7 @@ abstract class _UserForm implements UserForm {
       {final String id,
       final String title,
       final String? description,
-      final dynamic status,
+      final FormStatus status,
       final List<Question> questions}) = _$UserFormImpl;
 
   factory _UserForm.fromJson(Map<String, dynamic> json) =
@@ -239,7 +237,7 @@ abstract class _UserForm implements UserForm {
   @override
   String? get description;
   @override
-  dynamic get status;
+  FormStatus get status;
   @override
   List<Question> get questions;
   @override

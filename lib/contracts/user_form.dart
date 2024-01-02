@@ -11,7 +11,7 @@ class UserForm with _$UserForm {
     @Default('') String id,
     @Default('Untitled form') String title,
     String? description,
-    @Default(FormStatus.init) status,
+    @Default(FormStatus.init) FormStatus status,
     @Default([]) List<Question> questions,
   }) = _UserForm;
 

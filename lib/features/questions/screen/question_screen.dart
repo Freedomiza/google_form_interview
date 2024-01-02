@@ -1,8 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:avnon_pre_interview/contracts/question.dart';
 import 'package:avnon_pre_interview/contracts/question_line.dart';
 import 'package:avnon_pre_interview/contracts/user_form.dart';
 import 'package:avnon_pre_interview/helpers/debouncer.dart';
 import 'package:avnon_pre_interview/providers/form_provider.dart';
+import 'package:avnon_pre_interview/providers/response_provider.dart';
+import 'package:avnon_pre_interview/routes/app_route.dart';
 import 'package:avnon_pre_interview/widgets/interactive_text_field.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/gestures.dart';
@@ -64,7 +67,8 @@ class _QuestionScreenState extends ConsumerState<QuestionScreen> {
                     ),
                   ),
                 ),
-              if (userForm.status == FormStatus.review)
+              if (userForm.status == FormStatus.review ||
+                  userForm.status == FormStatus.submitted)
                 MaterialButton(
                   minWidth: double.infinity,
                   color: Theme.of(context).colorScheme.surfaceVariant,
@@ -80,15 +84,23 @@ class _QuestionScreenState extends ConsumerState<QuestionScreen> {
                     ),
                   ),
                 ),
-              if (userForm.status == FormStatus.review) Gap(16.sp),
-              if (userForm.status == FormStatus.review)
+              if (userForm.status == FormStatus.review ||
+                  userForm.status == FormStatus.submitted)
+                Gap(16.sp),
+              if (userForm.status == FormStatus.review ||
+                  userForm.status == FormStatus.submitted)
                 MaterialButton(
                   minWidth: double.infinity,
                   color: Theme.of(context).colorScheme.primary,
                   onPressed: () {
                     ref
                         .read(userFormListProvider.notifier)
-                        .changeStatus(FormStatus.init);
+                        .changeStatus(FormStatus.submitted);
+
+                    ref
+                        .read(responseFormListProvider.notifier)
+                        .submit(userForm);
+                    context.router.navigate(const ResponsesRoute());
                   },
                   child: Text(
                     "Submit",
@@ -174,7 +186,7 @@ class ReadOnlyQuestionLineItem extends ConsumerWidget {
                                         question, item, value);
                               }),
                           Text(
-                            item.question ?? '',
+                            item.isOther ? "Other:" : item.question ?? '',
                           )
                         ],
                       ),
@@ -183,7 +195,7 @@ class ReadOnlyQuestionLineItem extends ConsumerWidget {
                       Container(
                         padding: EdgeInsets.only(left: 16.sp),
                         child: InteractiveTextField(
-                          value: item.longAnswer,
+                          value: item.question,
                           labelText: 'Enter text',
                           maxLength: 512,
                           maxLines: 5,
@@ -191,7 +203,7 @@ class ReadOnlyQuestionLineItem extends ConsumerWidget {
                             _debouncer.run(() {
                               ref
                                   .read(userFormListProvider.notifier)
-                                  .changeQuestionListLongAnswerTextAt(
+                                  .changeQuestionListTextAt(
                                       question, item, value);
                             });
                           },
@@ -302,12 +314,6 @@ class QuestionLineItem extends ConsumerWidget {
                           ref
                               .read(userFormListProvider.notifier)
                               .removeQuestionList(question, e);
-                        },
-                        onLongAnswerTextChange: (value) {
-                          ref
-                              .read(userFormListProvider.notifier)
-                              .changeQuestionListLongAnswerTextAt(
-                                  question, e, value);
                         },
                       );
                     },
@@ -426,7 +432,6 @@ class OptionLineItem extends StatelessWidget {
   final void Function(bool editable)? onEdit;
 
   final void Function(String value)? onTextChange;
-  final void Function(String value)? onLongAnswerTextChange;
 
   final void Function(bool? value)? onCheck;
 
@@ -442,7 +447,6 @@ class OptionLineItem extends StatelessWidget {
     this.onEdit,
     required this.controller,
     required this.onTextChange,
-    required this.onLongAnswerTextChange,
     required this.onCheck,
     this.otherController,
   });
@@ -462,7 +466,7 @@ class OptionLineItem extends StatelessWidget {
                     onChanged: (e) {
                       onCheck?.call(e ?? false);
                     }),
-                Expanded(child: Text(data.question ?? '')),
+                const Expanded(child: Text('Other:')),
                 IconButton(
                   onPressed: () {
                     onDelete?.call();
@@ -472,20 +476,19 @@ class OptionLineItem extends StatelessWidget {
                 )
               ],
             ),
-            if (data.checked)
-              Container(
-                padding: EdgeInsets.only(left: 16.sp),
-                child: InteractiveTextField(
-                  controller: otherController,
-                  value: data.longAnswer,
-                  labelText: 'Enter text',
-                  onChanged: (value) {
-                    _debouncer.run(() {
-                      onLongAnswerTextChange?.call(value);
-                    });
-                  },
-                ),
+            Container(
+              padding: EdgeInsets.only(left: 16.sp),
+              child: InteractiveTextField(
+                controller: otherController,
+                value: data.question,
+                labelText: 'Enter text',
+                onChanged: (value) {
+                  _debouncer.run(() {
+                    onTextChange?.call(value);
+                  });
+                },
               ),
+            ),
           ],
         ),
       );

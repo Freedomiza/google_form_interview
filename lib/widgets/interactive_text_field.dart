@@ -4,12 +4,17 @@ class InteractiveTextField extends StatefulWidget {
   final void Function(String value)? onChanged;
   final String? value;
   final String? labelText;
-  const InteractiveTextField({
-    super.key,
-    required this.value,
-    this.labelText,
-    this.onChanged,
-  });
+  final TextEditingController? controller;
+  final int? maxLines;
+  final int? maxLength;
+  const InteractiveTextField(
+      {super.key,
+      required this.value,
+      this.labelText,
+      this.onChanged,
+      this.controller,
+      this.maxLength,
+      this.maxLines = 1});
 
   @override
   State<InteractiveTextField> createState() => _InteractiveTextFieldState();
@@ -26,7 +31,9 @@ class _InteractiveTextFieldState extends State<InteractiveTextField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: controller,
+      controller: widget.controller ?? controller,
+      maxLines: widget.maxLines,
+      maxLength: widget.maxLength,
       decoration: InputDecoration(
         border: const UnderlineInputBorder(),
         labelText: widget.labelText ?? 'Title',

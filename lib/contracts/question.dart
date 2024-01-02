@@ -10,6 +10,7 @@ class Question with _$Question {
     @Default('') String title,
     @Default([]) List<QuestionLine> questions,
     @Default(QuestionType.multiple) QuestionType type,
+    @Default('') String longQuestion,
     String? description,
   }) = _Question;
 

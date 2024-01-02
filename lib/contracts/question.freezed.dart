@@ -24,6 +24,7 @@ mixin _$Question {
   String get title => throw _privateConstructorUsedError;
   List<QuestionLine> get questions => throw _privateConstructorUsedError;
   QuestionType get type => throw _privateConstructorUsedError;
+  String get longQuestion => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -42,6 +43,7 @@ abstract class $QuestionCopyWith<$Res> {
       String title,
       List<QuestionLine> questions,
       QuestionType type,
+      String longQuestion,
       String? description});
 }
 
@@ -62,6 +64,7 @@ class _$QuestionCopyWithImpl<$Res, $Val extends Question>
     Object? title = null,
     Object? questions = null,
     Object? type = null,
+    Object? longQuestion = null,
     Object? description = freezed,
   }) {
     return _then(_value.copyWith(
@@ -81,6 +84,10 @@ class _$QuestionCopyWithImpl<$Res, $Val extends Question>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as QuestionType,
+      longQuestion: null == longQuestion
+          ? _value.longQuestion
+          : longQuestion // ignore: cast_nullable_to_non_nullable
+              as String,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -102,6 +109,7 @@ abstract class _$$QuestionImplCopyWith<$Res>
       String title,
       List<QuestionLine> questions,
       QuestionType type,
+      String longQuestion,
       String? description});
 }
 
@@ -120,6 +128,7 @@ class __$$QuestionImplCopyWithImpl<$Res>
     Object? title = null,
     Object? questions = null,
     Object? type = null,
+    Object? longQuestion = null,
     Object? description = freezed,
   }) {
     return _then(_$QuestionImpl(
@@ -139,6 +148,10 @@ class __$$QuestionImplCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as QuestionType,
+      longQuestion: null == longQuestion
+          ? _value.longQuestion
+          : longQuestion // ignore: cast_nullable_to_non_nullable
+              as String,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -155,6 +168,7 @@ class _$QuestionImpl implements _Question {
       this.title = '',
       final List<QuestionLine> questions = const [],
       this.type = QuestionType.multiple,
+      this.longQuestion = '',
       this.description})
       : _questions = questions;
 
@@ -180,11 +194,14 @@ class _$QuestionImpl implements _Question {
   @JsonKey()
   final QuestionType type;
   @override
+  @JsonKey()
+  final String longQuestion;
+  @override
   final String? description;
 
   @override
   String toString() {
-    return 'Question(id: $id, title: $title, questions: $questions, type: $type, description: $description)';
+    return 'Question(id: $id, title: $title, questions: $questions, type: $type, longQuestion: $longQuestion, description: $description)';
   }
 
   @override
@@ -197,14 +214,22 @@ class _$QuestionImpl implements _Question {
             const DeepCollectionEquality()
                 .equals(other._questions, _questions) &&
             (identical(other.type, type) || other.type == type) &&
+            (identical(other.longQuestion, longQuestion) ||
+                other.longQuestion == longQuestion) &&
             (identical(other.description, description) ||
                 other.description == description));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title,
-      const DeepCollectionEquality().hash(_questions), type, description);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      title,
+      const DeepCollectionEquality().hash(_questions),
+      type,
+      longQuestion,
+      description);
 
   @JsonKey(ignore: true)
   @override
@@ -226,6 +251,7 @@ abstract class _Question implements Question {
       final String title,
       final List<QuestionLine> questions,
       final QuestionType type,
+      final String longQuestion,
       final String? description}) = _$QuestionImpl;
 
   factory _Question.fromJson(Map<String, dynamic> json) =
@@ -239,6 +265,8 @@ abstract class _Question implements Question {
   List<QuestionLine> get questions;
   @override
   QuestionType get type;
+  @override
+  String get longQuestion;
   @override
   String? get description;
   @override

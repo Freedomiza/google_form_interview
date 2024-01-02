@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 class HomeScreen extends ConsumerWidget {
   double get appIconFontSize => 16;
@@ -72,6 +73,7 @@ class HomeScreen extends ConsumerWidget {
         onPressed: () {
           ref.read(userFormListProvider.notifier).addQuestion(
                 Question(
+                  id: const Uuid().v4(),
                   title: 'Question Title',
                   description: 'Question Description',
                 ),

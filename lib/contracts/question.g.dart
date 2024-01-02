@@ -16,6 +16,7 @@ _$QuestionImpl _$$QuestionImplFromJson(Map<String, dynamic> json) =>
           const [],
       type: $enumDecodeNullable(_$QuestionTypeEnumMap, json['type']) ??
           QuestionType.multiple,
+      longQuestion: json['longQuestion'] as String? ?? '',
       description: json['description'] as String?,
     );
 
@@ -25,6 +26,7 @@ Map<String, dynamic> _$$QuestionImplToJson(_$QuestionImpl instance) =>
       'title': instance.title,
       'questions': instance.questions,
       'type': _$QuestionTypeEnumMap[instance.type]!,
+      'longQuestion': instance.longQuestion,
       'description': instance.description,
     };
 

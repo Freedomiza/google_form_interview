@@ -33,9 +33,13 @@ enum QuestionType {
 @freezed
 class QuestionLine with _$QuestionLine {
   factory QuestionLine({
+    String? id,
     String? question,
     String? answer,
     String? longAnswer,
+    @Default(false) bool editable,
+    @Default(false) bool checked,
+    @Default(false) bool isOther,
     @Default(QuestionType.multiple) QuestionType type,
     @Default([]) List<String> options,
   }) = _QuestionLine;

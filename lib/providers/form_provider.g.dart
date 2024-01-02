@@ -6,7 +6,7 @@ part of 'form_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userFormListHash() => r'30ed9db118b53b8984e8c91054a158ca5601ecdd';
+String _$userFormListHash() => r'8e1998cd26bc1d7ea15ab73113803971c46f552e';
 
 /// See also [UserFormList].
 @ProviderFor(UserFormList)

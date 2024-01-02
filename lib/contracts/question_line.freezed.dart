@@ -20,9 +20,13 @@ QuestionLine _$QuestionLineFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$QuestionLine {
+  String? get id => throw _privateConstructorUsedError;
   String? get question => throw _privateConstructorUsedError;
   String? get answer => throw _privateConstructorUsedError;
   String? get longAnswer => throw _privateConstructorUsedError;
+  bool get editable => throw _privateConstructorUsedError;
+  bool get checked => throw _privateConstructorUsedError;
+  bool get isOther => throw _privateConstructorUsedError;
   QuestionType get type => throw _privateConstructorUsedError;
   List<String> get options => throw _privateConstructorUsedError;
 
@@ -39,9 +43,13 @@ abstract class $QuestionLineCopyWith<$Res> {
       _$QuestionLineCopyWithImpl<$Res, QuestionLine>;
   @useResult
   $Res call(
-      {String? question,
+      {String? id,
+      String? question,
       String? answer,
       String? longAnswer,
+      bool editable,
+      bool checked,
+      bool isOther,
       QuestionType type,
       List<String> options});
 }
@@ -59,13 +67,21 @@ class _$QuestionLineCopyWithImpl<$Res, $Val extends QuestionLine>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? question = freezed,
     Object? answer = freezed,
     Object? longAnswer = freezed,
+    Object? editable = null,
+    Object? checked = null,
+    Object? isOther = null,
     Object? type = null,
     Object? options = null,
   }) {
     return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       question: freezed == question
           ? _value.question
           : question // ignore: cast_nullable_to_non_nullable
@@ -78,6 +94,18 @@ class _$QuestionLineCopyWithImpl<$Res, $Val extends QuestionLine>
           ? _value.longAnswer
           : longAnswer // ignore: cast_nullable_to_non_nullable
               as String?,
+      editable: null == editable
+          ? _value.editable
+          : editable // ignore: cast_nullable_to_non_nullable
+              as bool,
+      checked: null == checked
+          ? _value.checked
+          : checked // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isOther: null == isOther
+          ? _value.isOther
+          : isOther // ignore: cast_nullable_to_non_nullable
+              as bool,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -99,9 +127,13 @@ abstract class _$$QuestionLineImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? question,
+      {String? id,
+      String? question,
       String? answer,
       String? longAnswer,
+      bool editable,
+      bool checked,
+      bool isOther,
       QuestionType type,
       List<String> options});
 }
@@ -117,13 +149,21 @@ class __$$QuestionLineImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? question = freezed,
     Object? answer = freezed,
     Object? longAnswer = freezed,
+    Object? editable = null,
+    Object? checked = null,
+    Object? isOther = null,
     Object? type = null,
     Object? options = null,
   }) {
     return _then(_$QuestionLineImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       question: freezed == question
           ? _value.question
           : question // ignore: cast_nullable_to_non_nullable
@@ -136,6 +176,18 @@ class __$$QuestionLineImplCopyWithImpl<$Res>
           ? _value.longAnswer
           : longAnswer // ignore: cast_nullable_to_non_nullable
               as String?,
+      editable: null == editable
+          ? _value.editable
+          : editable // ignore: cast_nullable_to_non_nullable
+              as bool,
+      checked: null == checked
+          ? _value.checked
+          : checked // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isOther: null == isOther
+          ? _value.isOther
+          : isOther // ignore: cast_nullable_to_non_nullable
+              as bool,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -152,9 +204,13 @@ class __$$QuestionLineImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$QuestionLineImpl implements _QuestionLine {
   _$QuestionLineImpl(
-      {this.question,
+      {this.id,
+      this.question,
       this.answer,
       this.longAnswer,
+      this.editable = false,
+      this.checked = false,
+      this.isOther = false,
       this.type = QuestionType.multiple,
       final List<String> options = const []})
       : _options = options;
@@ -163,11 +219,22 @@ class _$QuestionLineImpl implements _QuestionLine {
       _$$QuestionLineImplFromJson(json);
 
   @override
+  final String? id;
+  @override
   final String? question;
   @override
   final String? answer;
   @override
   final String? longAnswer;
+  @override
+  @JsonKey()
+  final bool editable;
+  @override
+  @JsonKey()
+  final bool checked;
+  @override
+  @JsonKey()
+  final bool isOther;
   @override
   @JsonKey()
   final QuestionType type;
@@ -182,7 +249,7 @@ class _$QuestionLineImpl implements _QuestionLine {
 
   @override
   String toString() {
-    return 'QuestionLine(question: $question, answer: $answer, longAnswer: $longAnswer, type: $type, options: $options)';
+    return 'QuestionLine(id: $id, question: $question, answer: $answer, longAnswer: $longAnswer, editable: $editable, checked: $checked, isOther: $isOther, type: $type, options: $options)';
   }
 
   @override
@@ -190,19 +257,33 @@ class _$QuestionLineImpl implements _QuestionLine {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$QuestionLineImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.question, question) ||
                 other.question == question) &&
             (identical(other.answer, answer) || other.answer == answer) &&
             (identical(other.longAnswer, longAnswer) ||
                 other.longAnswer == longAnswer) &&
+            (identical(other.editable, editable) ||
+                other.editable == editable) &&
+            (identical(other.checked, checked) || other.checked == checked) &&
+            (identical(other.isOther, isOther) || other.isOther == isOther) &&
             (identical(other.type, type) || other.type == type) &&
             const DeepCollectionEquality().equals(other._options, _options));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, question, answer, longAnswer,
-      type, const DeepCollectionEquality().hash(_options));
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      question,
+      answer,
+      longAnswer,
+      editable,
+      checked,
+      isOther,
+      type,
+      const DeepCollectionEquality().hash(_options));
 
   @JsonKey(ignore: true)
   @override
@@ -220,9 +301,13 @@ class _$QuestionLineImpl implements _QuestionLine {
 
 abstract class _QuestionLine implements QuestionLine {
   factory _QuestionLine(
-      {final String? question,
+      {final String? id,
+      final String? question,
       final String? answer,
       final String? longAnswer,
+      final bool editable,
+      final bool checked,
+      final bool isOther,
       final QuestionType type,
       final List<String> options}) = _$QuestionLineImpl;
 
@@ -230,11 +315,19 @@ abstract class _QuestionLine implements QuestionLine {
       _$QuestionLineImpl.fromJson;
 
   @override
+  String? get id;
+  @override
   String? get question;
   @override
   String? get answer;
   @override
   String? get longAnswer;
+  @override
+  bool get editable;
+  @override
+  bool get checked;
+  @override
+  bool get isOther;
   @override
   QuestionType get type;
   @override

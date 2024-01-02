@@ -1,0 +1,14 @@
+{
+  "@@locale": "en-US",
+  "helloWorld": "Hello World!",
+  "@helloWorld": {
+    "description": "The conventional greeting for a new programmer."
+  },
+  "commonAppName": "Generative AI2Img Chat",
+  "@commonAppName": {
+    "description": "Main application name: Generative AI2Img Chat"
+  },
+  "txtQuestions": "Questions",
+  "txtResponses": "Responses",
+  "txtSettings": "Settings"
+}

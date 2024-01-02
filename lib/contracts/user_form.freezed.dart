@@ -20,8 +20,10 @@ UserForm _$UserFormFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserForm {
+  String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  dynamic get status => throw _privateConstructorUsedError;
   List<Question> get questions => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +37,12 @@ abstract class $UserFormCopyWith<$Res> {
   factory $UserFormCopyWith(UserForm value, $Res Function(UserForm) then) =
       _$UserFormCopyWithImpl<$Res, UserForm>;
   @useResult
-  $Res call({String title, String? description, List<Question> questions});
+  $Res call(
+      {String id,
+      String title,
+      String? description,
+      dynamic status,
+      List<Question> questions});
 }
 
 /// @nodoc
@@ -51,11 +58,17 @@ class _$UserFormCopyWithImpl<$Res, $Val extends UserForm>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? description = freezed,
+    Object? status = freezed,
     Object? questions = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -64,6 +77,10 @@ class _$UserFormCopyWithImpl<$Res, $Val extends UserForm>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      status: freezed == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as dynamic,
       questions: null == questions
           ? _value.questions
           : questions // ignore: cast_nullable_to_non_nullable
@@ -80,7 +97,12 @@ abstract class _$$UserFormImplCopyWith<$Res>
       __$$UserFormImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String title, String? description, List<Question> questions});
+  $Res call(
+      {String id,
+      String title,
+      String? description,
+      dynamic status,
+      List<Question> questions});
 }
 
 /// @nodoc
@@ -94,11 +116,17 @@ class __$$UserFormImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? title = null,
     Object? description = freezed,
+    Object? status = freezed,
     Object? questions = null,
   }) {
     return _then(_$UserFormImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -107,6 +135,7 @@ class __$$UserFormImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      status: freezed == status ? _value.status! : status,
       questions: null == questions
           ? _value._questions
           : questions // ignore: cast_nullable_to_non_nullable
@@ -119,8 +148,10 @@ class __$$UserFormImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UserFormImpl implements _UserForm {
   _$UserFormImpl(
-      {this.title = 'Untitled form',
+      {this.id = '',
+      this.title = 'Untitled form',
       this.description,
+      this.status = FormStatus.init,
       final List<Question> questions = const []})
       : _questions = questions;
 
@@ -129,9 +160,15 @@ class _$UserFormImpl implements _UserForm {
 
   @override
   @JsonKey()
+  final String id;
+  @override
+  @JsonKey()
   final String title;
   @override
   final String? description;
+  @override
+  @JsonKey()
+  final dynamic status;
   final List<Question> _questions;
   @override
   @JsonKey()
@@ -143,7 +180,7 @@ class _$UserFormImpl implements _UserForm {
 
   @override
   String toString() {
-    return 'UserForm(title: $title, description: $description, questions: $questions)';
+    return 'UserForm(id: $id, title: $title, description: $description, status: $status, questions: $questions)';
   }
 
   @override
@@ -151,16 +188,23 @@ class _$UserFormImpl implements _UserForm {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserFormImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            const DeepCollectionEquality().equals(other.status, status) &&
             const DeepCollectionEquality()
                 .equals(other._questions, _questions));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, title, description,
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      title,
+      description,
+      const DeepCollectionEquality().hash(status),
       const DeepCollectionEquality().hash(_questions));
 
   @JsonKey(ignore: true)
@@ -179,17 +223,23 @@ class _$UserFormImpl implements _UserForm {
 
 abstract class _UserForm implements UserForm {
   factory _UserForm(
-      {final String title,
+      {final String id,
+      final String title,
       final String? description,
+      final dynamic status,
       final List<Question> questions}) = _$UserFormImpl;
 
   factory _UserForm.fromJson(Map<String, dynamic> json) =
       _$UserFormImpl.fromJson;
 
   @override
+  String get id;
+  @override
   String get title;
   @override
   String? get description;
+  @override
+  dynamic get status;
   @override
   List<Question> get questions;
   @override

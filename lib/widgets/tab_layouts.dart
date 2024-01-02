@@ -20,7 +20,7 @@ class TabLayoutWithRoute extends StatefulWidget {
     super.key,
     required this.screens,
     required this.items,
-    this.swipeable = true,
+    this.swipeable = false,
     this.headerVisible = true,
     this.centerButton,
     this.bottomAppBarTextColor,

@@ -1,8 +1,10 @@
 import 'package:avnon_pre_interview/contracts/question.dart';
 import 'package:avnon_pre_interview/contracts/question_line.dart';
+import 'package:avnon_pre_interview/contracts/user_form.dart';
 import 'package:avnon_pre_interview/helpers/debouncer.dart';
 import 'package:avnon_pre_interview/providers/form_provider.dart';
 import 'package:avnon_pre_interview/widgets/interactive_text_field.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,13 +17,6 @@ class QuestionScreen extends ConsumerStatefulWidget {
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _QuestionScreenState();
-}
-
-class FormKeys {
-  static const String title = 'title';
-  static const String description = 'description';
-  static const String type = 'type';
-  static const String options = 'options';
 }
 
 class _QuestionScreenState extends ConsumerState<QuestionScreen> {
@@ -41,19 +36,67 @@ class _QuestionScreenState extends ConsumerState<QuestionScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ...userForm.questions.map((e) => renderQuestion(e)).toList(),
+              if (userForm.status == FormStatus.init)
+                ...userForm.questions.map((e) => renderQuestion(e)).toList(),
+              if (userForm.status == FormStatus.review)
+                ...userForm.questions
+                    .map((e) => renderReviewQuestion(e))
+                    .toList(),
               Gap(16.sp),
-              MaterialButton(
-                minWidth: double.infinity,
-                color: Theme.of(context).colorScheme.primary,
-                onPressed: () {},
-                child: Text(
-                  "Review",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
+              if (userForm.questions.isEmpty)
+                const Center(
+                  child: Text("Click [+] to Add new questions"),
+                ),
+              if (userForm.status == FormStatus.init &&
+                  userForm.questions.isNotEmpty)
+                MaterialButton(
+                  minWidth: double.infinity,
+                  color: Theme.of(context).colorScheme.primary,
+                  onPressed: () {
+                    ref
+                        .read(userFormListProvider.notifier)
+                        .changeStatus(FormStatus.review);
+                  },
+                  child: Text(
+                    "Review",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
                   ),
                 ),
-              )
+              if (userForm.status == FormStatus.review)
+                MaterialButton(
+                  minWidth: double.infinity,
+                  color: Theme.of(context).colorScheme.surfaceVariant,
+                  onPressed: () {
+                    ref
+                        .read(userFormListProvider.notifier)
+                        .changeStatus(FormStatus.init);
+                  },
+                  child: Text(
+                    "Edit",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+              if (userForm.status == FormStatus.review) Gap(16.sp),
+              if (userForm.status == FormStatus.review)
+                MaterialButton(
+                  minWidth: double.infinity,
+                  color: Theme.of(context).colorScheme.primary,
+                  onPressed: () {
+                    ref
+                        .read(userFormListProvider.notifier)
+                        .changeStatus(FormStatus.init);
+                  },
+                  child: Text(
+                    "Submit",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ),
+                )
             ],
           ),
         ),
@@ -72,6 +115,110 @@ class _QuestionScreenState extends ConsumerState<QuestionScreen> {
                 .changeQuestionType(question, type);
           }),
     );
+  }
+
+  Widget renderReviewQuestion(Question question) {
+    return Container(
+        padding: EdgeInsets.only(bottom: 16.sp),
+        child: ReadOnlyQuestionLineItem(
+          question: question,
+        ));
+  }
+}
+
+class ReadOnlyQuestionLineItem extends ConsumerWidget {
+  final Question question;
+  ReadOnlyQuestionLineItem({
+    super.key,
+    required this.question,
+  });
+  final Debouncer _debouncer = Debouncer(milliseconds: 500);
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Card(
+        child: Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(16.sp),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(question.title),
+          Gap(16.sp),
+          if (question.type == QuestionType.multiple)
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: question.questions.length,
+              itemBuilder: (context, index) {
+                final item = question.questions[index];
+
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        ref
+                            .read(userFormListProvider.notifier)
+                            .checkQuestionListTextAt(
+                                question, item, !item.checked);
+                      },
+                      child: Row(
+                        children: [
+                          Checkbox.adaptive(
+                              value: item.checked,
+                              onChanged: (value) {
+                                ref
+                                    .read(userFormListProvider.notifier)
+                                    .checkQuestionListTextAt(
+                                        question, item, value);
+                              }),
+                          Text(
+                            item.question ?? '',
+                          )
+                        ],
+                      ),
+                    ),
+                    if (item.checked && item.isOther)
+                      Container(
+                        padding: EdgeInsets.only(left: 16.sp),
+                        child: InteractiveTextField(
+                          value: item.longAnswer,
+                          labelText: 'Enter text',
+                          maxLength: 512,
+                          maxLines: 5,
+                          onChanged: (value) {
+                            _debouncer.run(() {
+                              ref
+                                  .read(userFormListProvider.notifier)
+                                  .changeQuestionListLongAnswerTextAt(
+                                      question, item, value);
+                            });
+                          },
+                        ),
+                      ),
+                  ],
+                );
+              },
+            ),
+          if (question.type == QuestionType.paragraph)
+            InteractiveTextField(
+              value: question.longQuestion,
+              maxLines: 5,
+              maxLength: 512,
+              labelText: 'Long answer text',
+              // controller: TextEditingController.fromValue(
+              //   TextEditingValue(text: question.longQuestion),
+              // ),
+              onChanged: (value) {
+                ref
+                    .read(userFormListProvider.notifier)
+                    .changeQuestionParagraph(question, value);
+              },
+            ),
+        ],
+      ),
+    ));
   }
 }
 
@@ -105,15 +252,24 @@ class QuestionLineItem extends ConsumerWidget {
               },
             ),
             Gap(16.sp),
-            DropdownMenu<String>(
-              initialSelection: question.type.name,
-              onSelected: (String? value) {
+            DropdownButton2<String>(
+              value: question.type.name,
+              onChanged: (String? value) {
                 onTypeChange?.call(QuestionType.parse(value));
               },
-              dropdownMenuEntries: QuestionType.items
-                  .map<DropdownMenuEntry<String>>((QuestionType value) {
-                return DropdownMenuEntry<String>(
-                    value: value.name, label: value.name);
+              hint: Text(
+                'Select Item',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Theme.of(context).hintColor,
+                ),
+              ),
+              items: QuestionType.items
+                  .map<DropdownMenuItem<String>>((QuestionType value) {
+                return DropdownMenuItem<String>(
+                  value: value.name,
+                  child: Text(value.name),
+                );
               }).toList(),
             ),
             if (question.type == QuestionType.multiple)

@@ -209,4 +209,8 @@ class UserFormList extends _$UserFormList {
 
     state = state.copyWith(questions: modified);
   }
+
+  void changeStatus(FormStatus status) {
+    state = state.copyWith(status: status);
+  }
 }

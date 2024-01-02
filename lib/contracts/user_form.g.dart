@@ -8,8 +8,10 @@ part of 'user_form.dart';
 
 _$UserFormImpl _$$UserFormImplFromJson(Map<String, dynamic> json) =>
     _$UserFormImpl(
+      id: json['id'] as String? ?? '',
       title: json['title'] as String? ?? 'Untitled form',
       description: json['description'] as String?,
+      status: json['status'] ?? FormStatus.init,
       questions: (json['questions'] as List<dynamic>?)
               ?.map((e) => Question.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -18,7 +20,9 @@ _$UserFormImpl _$$UserFormImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$UserFormImplToJson(_$UserFormImpl instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'title': instance.title,
       'description': instance.description,
+      'status': instance.status,
       'questions': instance.questions,
     };
